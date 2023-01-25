@@ -6,8 +6,10 @@ gui.handle_events()
 local mygui = {}
 
 function mygui.gui_closed(event)
-    if event.name == defines.events.on_gui_location_changed then
+    if event.name == defines.events.on_gui_location_changed and not global.players[event.player_index].initialized then
         game.players[event.player_index].clear_cursor() -- does it work??
+        global.players[event.player_index].initialized = true
+        mygui.update_active_variables(event.player_index)
     end
     if (event.name == defines.events.on_gui_closed) then
         mygui.close(event)
@@ -33,12 +35,89 @@ function mygui.confirm(event)
     global.players[event.player_index] = nil
 end
 
+function mygui.update_active_variables(player_index)
+
+    local playerData = global.players[player_index];
+    local activeVariables = playerData.activeVariables
+
+    playerData.refs["slot_frame"].clear()
+
+    local i = 1
+    while i <= 9 do
+        local parentFlow = {
+            type = "flow",
+            direction = "horizontal",
+            style = "slot_table_spacing_horizontal_flow",
+            children = {}
+        }
+
+        table.insert(parentFlow.children, {
+                type = "sprite",
+                sprite = string.format("virtual-signal/signal-%s", i),
+                style_mods = {
+                    width = 32,
+                    height = 32,
+                    stretch_image_to_widget_size = true,
+                    margin = { 4, 4 }
+                }
+            })
+
+        local strVariableEntity = string.format("blueprint-variable-%s-entity", i)
+        if activeVariables[strVariableEntity] then
+            table.insert(parentFlow.children, {
+                    type = "choose-elem-button",
+                    name = strVariableEntity,
+                    elem_type = "signal",
+                    signal = { type = "virtual", name = strVariableEntity },
+                    handler = mygui.elem_selected
+                })
+        else
+            table.insert(parentFlow.children, {
+                    type = "choose-elem-button",
+                    name = strVariableEntity,
+                    elem_type = "signal",
+                    
+                    handler = mygui.elem_selected
+                })
+        end
+
+        table.insert(parentFlow.children, { type = "empty-widget", style_mods = { width = 40, padding = 0, } })
+
+        local n = 1
+        while n <= 4 do
+            local strArithmetic = string.format("blueprint-variable-%s-arithmetic-%s", i, n)
+
+            if activeVariables[strArithmetic] then
+                table.insert(parentFlow.children, {
+                    type = "choose-elem-button",
+                    name = strArithmetic,
+                    elem_type = "signal",
+                    signal = { type = "virtual", name = strArithmetic },
+                    handler = mygui.elem_selected
+                })
+            else
+                table.insert(parentFlow.children, {
+                    type = "choose-elem-button",
+                    name = strArithmetic,
+                    elem_type = "signal",
+                    
+                    handler = mygui.elem_selected
+                })
+            end
+
+            n = n + 1
+        end
+        gui.add(playerData.refs.slot_frame, parentFlow)
+        i = i + 1
+    end
+end
+
 function mygui.create_window(player_index)
     if not global.players[player_index] then
         error("Attempt to create Blueprint Variable GUI without an existing session")
     end
 
-    local player = global.players[player_index].player
+    local player = game.players[player_index]
 
     local i = 1;
     local variable_elems = {}
@@ -64,7 +143,7 @@ function mygui.create_window(player_index)
                         type = "choose-elem-button",
                         name = string.format("blueprint-variable-%s-entity", i),
                         elem_type = "signal",
-                        signal = { type = "virtual", name = string.format("blueprint-variable-%s-entity", i) },
+                        --signal = { type = "virtual", name = string.format("blueprint-variable-%s-entity", i) },
                         handler = mygui.elem_selected
                     },
                     {
@@ -78,28 +157,28 @@ function mygui.create_window(player_index)
                         type = "choose-elem-button",
                         name = string.format("blueprint-variable-%s-arithmetic-1", i),
                         elem_type = "signal",
-                        signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-1", i) },
+                        --signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-1", i) },
                         handler = mygui.elem_selected
                     },
                     {
                         type = "choose-elem-button",
                         name = string.format("blueprint-variable-%s-arithmetic-2", i),
                         elem_type = "signal",
-                        signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-2", i) },
+                        --signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-2", i) },
                         handler = mygui.elem_selected
                     },
                     {
                         type = "choose-elem-button",
                         name = string.format("blueprint-variable-%s-arithmetic-3", i),
                         elem_type = "signal",
-                        signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-3", i) },
+                        --signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-3", i) },
                         handler = mygui.elem_selected
                     },
                     {
                         type = "choose-elem-button",
                         name = string.format("blueprint-variable-%s-arithmetic-4", i),
                         elem_type = "signal",
-                        signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-4", i) },
+                        --signal = { type = "virtual", name = string.format("blueprint-variable-%s-arithmetic-4", i) },
                         handler = mygui.elem_selected
                     },
                 }
@@ -150,6 +229,7 @@ function mygui.create_window(player_index)
                             style = "horizontal_flow",
                             children = {
                                 {
+
                                     type = "frame",
                                     style = "inside_shallow_frame_with_padding",
                                     children = {

@@ -37,9 +37,9 @@ script.on_event(defines.events.on_built_entity, function(event)
             error("Player has existing session and is trying to create another")
         end
 
-        local bpVariables = mgr.hasBlueprintVariables(event.created_entity)
-        local nameVariables = mgr.nameHasVariables(event.created_entity)
-        local logisticVariables = false;
+        local bpVariables = mgr.getBlueprintVariables(event.created_entity)
+        local nameVariables = mgr.getNameVariables(event.created_entity)
+        local logisticVariables = mgr.getLogisticVariables(event.created_entity);
 
         if bpVariables or nameVariables or logisticVariables then
             local tags = event.created_entity.tags
@@ -47,9 +47,9 @@ script.on_event(defines.events.on_built_entity, function(event)
             if not tags.bv then tags.bv = {} end
 
             tags.bv = {
-                hasBlueprintVariable = bpVariables,
-                hasVariableInName = nameVariables,
-                hasLogisticVariables = logisticVariables,
+                hasBlueprintVariable = next(bpVariables) ~= nil,
+                hasVariableInName = next(nameVariables) ~= nil,
+                hasLogisticVariables = next(logisticVariables) ~= nil,
                 session_id = session_id,
                 player_index = event.player_index
             }
@@ -63,22 +63,34 @@ script.on_event(defines.events.on_built_entity, function(event)
                     entities = {},
                     entities_with_names = {},
                     logistic_entities = {},
-                    player = player,
+                    --player = player,
                     settings = {},
-                    refs = {}
+                    refs = {},
+                    activeVariables = {}
                 }
                 playerData = global.players[event.player_index]
+
                 gui.create_window(event.player_index)
             end
 
-            if bpVariables then
+            if next(bpVariables) then
                 table.insert(playerData.entities, event.created_entity)
             end
-            if nameVariables then
+            if next(nameVariables) then
                 table.insert(playerData.entities_with_names, event.created_entity)
             end
-            if logisticVariables then
+            if next(logisticVariables) then
                 table.insert(playerData.logistic_entities, event.created_entity)
+            end
+
+            for _,v in pairs(bpVariables) do
+                playerData.activeVariables[v] = true
+            end
+            for _,v in pairs(nameVariables) do
+                playerData.activeVariables[v] = true
+            end
+            for _,v in pairs(logisticVariables) do
+                playerData.activeVariables[v] = true
             end
         end
     else

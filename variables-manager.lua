@@ -1,27 +1,39 @@
 local mgr = {}
 
-local function isVariable(str)
-    if not str then return false end
+local function getVariable(str)
+    if not str then return nil end
     local Start = "blueprint-variable"
-    return string.sub(str, 1, str.len(Start)) == Start
+    if string.sub(str, 1, str.len(Start)) == Start then
+        return str
+    end
+
+    return nil
 end
 
 local function checkGenericVariables(controlBehavior)
-    return isVariable((controlBehavior.circuit_condition.condition.first_signal or {}).name)
-        or isVariable((controlBehavior.circuit_condition.condition.second_signal or {}).name)
-        or isVariable((controlBehavior.logistic_condition.condition.first_signal or {}).name)
-        or isVariable((controlBehavior.logistic_condition.condition.second_signal or {}).name)
+    local results = {}
+    table.insert(results, getVariable((controlBehavior.circuit_condition.condition.first_signal or {}).name))
+    table.insert(results, getVariable((controlBehavior.circuit_condition.condition.second_signal or {}).name))
+    table.insert(results, getVariable((controlBehavior.logistic_condition.condition.first_signal or {}).name))
+    table.insert(results, getVariable((controlBehavior.logistic_condition.condition.second_signal or {}).name))
+    return results
 end
 
-function mgr.nameHasVariables(e)
-    if e.supports_backer_name() then
-        local pos, len = string.find(e.backer_name, "%[virtual%-signal=blueprint%-variable")
-        return pos ~= nil
-    end
-    return false
+function mgr.getNameVariables(e)
+    local results = {}
+    -- if e.supports_backer_name() and e.valid then
+    --     for w in e.backer_name:gmatch("%[.-%]") do
+    --         table.insert(results, getVariable(w:match("virtual%-signal%=(.-)%]"))) -- if variable, insert into results
+    --     end
+    -- end
+    return results
 end
 
-function mgr.hasBlueprintVariables(e)
+function mgr.getLogisticVariables(e)
+return {} -- not implemented
+end
+
+function mgr.getBlueprintVariables(e)
     local cb = e.get_control_behavior()
     if cb then
         if cb.type == defines.control_behavior.type.generic_on_off then
@@ -34,76 +46,87 @@ function mgr.hasBlueprintVariables(e)
             return checkGenericVariables(cb)
             ---
         elseif cb.type == defines.control_behavior.type.roboport then
-            return isVariable((cb.available_logistic_output_signal or {}).name)
-                or isVariable((cb.total_logistic_output_signal or {}).name)
-                or isVariable((cb.available_construction_output_signal or {}).name)
-                or isVariable((cb.total_construction_output_signal or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.available_logistic_output_signal or {}).name))
+            table.insert(results, getVariable((cb.total_logistic_output_signal or {}).name))
+            table.insert(results, getVariable((cb.available_construction_output_signal or {}).name))
+            table.insert(results, getVariable((cb.total_construction_output_signal or {}).name))
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.train_stop then
-            return checkGenericVariables(cb)
-                or isVariable((cb.stopped_train_signal or {}).name)
-                or isVariable((cb.trains_count_signal or {}).name)
-                or isVariable((cb.trains_limit_signal or {}).name)
+            local results = {table.unpack(checkGenericVariables(cb))}
+            table.insert(results,getVariable((cb.stopped_train_signal or {}).name))
+            table.insert(results,getVariable((cb.trains_count_signal or {}).name))
+            table.insert(results,getVariable((cb.trains_limit_signal or {}).name))
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.decider_combinator then
-            return isVariable((cb.parameters.first_signal or {}).name)
-                or isVariable((cb.parameters.second_signal or {}).name)
-                or isVariable((cb.parameters.output or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.parameters.first_signal or {}).name))
+            table.insert(results, getVariable((cb.parameters.second_signal or {}).name))
+            table.insert(results, getVariable((cb.parameters.output_signal or {}).name))
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.arithmetic_combinator then
-            return isVariable((cb.parameters.first_signal or {}).name)
-                or isVariable((cb.parameters.second_signal or {}).name)
-                or isVariable((cb.parameters.output_signal or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.parameters.first_signal or {}).name))
+            table.insert(results, getVariable((cb.parameters.second_signal or {}).name))
+            table.insert(results, getVariable((cb.parameters.output_signal or {}).name))
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.constant_combinator then
+            local results = {}
             for _, v in pairs(cb.parameters) do
-                if isVariable((v.signal or {}).name) then return true end
+                table.insert(results, getVariable((v.signal or {}).name))
             end
 
-            return false
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.transport_belt then
             return checkGenericVariables(cb)
             ---
         elseif cb.type == defines.control_behavior.type.accumulator then
-            return isVariable((cb.output_signal or {}).name)
+            return {getVariable((cb.output_signal or {}).name)}
             ---
         elseif cb.type == defines.control_behavior.type.rail_signal then
-            return isVariable((cb.red_signal or {}).name)
-                or isVariable((cb.orange_signal or {}).name)
-                or isVariable((cb.green_signal or {}).name)
-                or isVariable((cb.circuit_condition.condition.first_signal or {}).name)
-                or isVariable((cb.circuit_condition.condition.second_signal or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.red_signal or {}).name))
+            table.insert(results, getVariable((cb.orange_signal or {}).name))
+            table.insert(results, getVariable((cb.green_signal or {}).name))
+            table.insert(results, getVariable((cb.circuit_condition.condition.first_signal or {}).name))
+            table.insert(results, getVariable((cb.circuit_condition.condition.second_signal or {}).name))
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.rail_chain_signal then
-            return isVariable((cb.red_signal or {}).name)
-                or isVariable((cb.orange_signal or {}).name)
-                or isVariable((cb.green_signal or {}).name)
-                or isVariable((cb.blue_signal or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.red_signal or {}).name))
+            table.insert(results, getVariable((cb.orange_signal or {}).name))
+            table.insert(results, getVariable((cb.green_signal or {}).name))
+            table.insert(results, getVariable((cb.blue_signal or {}).name))
             ---
         elseif cb.type == defines.control_behavior.type.wall then
-            return isVariable((cb.output_signal or {}).name)
-                or isVariable((cb.circuit_condition.condition.first_signal or {}).name)
-                or isVariable((cb.circuit_condition.condition.second_signal or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.output_signal or {}).name))
+            table.insert(results, getVariable((cb.circuit_condition.condition.first_signal or {}).name))
+            table.insert(results, getVariable((cb.circuit_condition.condition.second_signal or {}).name))
+            return results
             ---
         elseif cb.type == defines.control_behavior.type.mining_drill then
             return checkGenericVariables(cb)
             ---
         elseif cb.type == defines.control_behavior.type.programmable_speaker then
-            return isVariable((cb.circuit_condition.condition.first_signal or {}).name)
-                or isVariable((cb.circuit_condition.condition.second_signal or {}).name)
+            local results = {}
+            table.insert(results, getVariable((cb.circuit_condition.condition.first_signal or {}).name))
+            table.insert(results, getVariable((cb.circuit_condition.condition.second_signal or {}).name))
+            return results
             ---
         end
     end
-    return false
-end
-
-function mgr.getBlueprintVariables()
-
+    return {}
 end
 
 local function updateSignal(signal, settings)
-    if signal and isVariable(signal.name) and settings[signal.name] then
+    if signal and getVariable(signal.name) and settings[signal.name] then
         signal.type = settings[signal.name].type
         signal.name = settings[signal.name].name
     end
@@ -160,7 +183,7 @@ local function updateControlBehavior(cb, settings)
     elseif cb.type == defines.control_behavior.type.constant_combinator then
         local p = cb.parameters
         for _, v in pairs(p) do
-            p.signal = updateSignal(p.signal, settings)
+            v.signal = updateSignal(v.signal, settings)
         end
         cb.parameters = p
         ---
