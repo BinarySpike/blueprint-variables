@@ -41,7 +41,7 @@ script.on_event(defines.events.on_built_entity, function(event)
         local nameVariables = mgr.getNameVariables(event.created_entity)
         local logisticVariables = mgr.getLogisticVariables(event.created_entity);
 
-        if bpVariables or nameVariables or logisticVariables then
+        if next(bpVariables) or next(nameVariables) or next(logisticVariables) then
             local tags = event.created_entity.tags
             if not tags then tags = {} end
             if not tags.bv then tags.bv = {} end
