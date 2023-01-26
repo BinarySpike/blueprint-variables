@@ -21,16 +21,16 @@ end
 
 function mgr.getNameVariables(e)
     local results = {}
-    -- if e.supports_backer_name() and e.valid then
-    --     for w in e.backer_name:gmatch("%[.-%]") do
-    --         table.insert(results, getVariable(w:match("virtual%-signal%=(.-)%]"))) -- if variable, insert into results
-    --     end
-    -- end
+    if e.supports_backer_name() and e.valid then
+        for w in e.backer_name:gmatch("%[.-%]") do
+            table.insert(results, getVariable(w:match("virtual%-signal%=(.-)%]"))) -- if variable, insert into results
+        end
+    end
     return results
 end
 
 function mgr.getLogisticVariables(e)
-return {} -- not implemented
+    return {} -- not implemented
 end
 
 function mgr.getBlueprintVariables(e)
@@ -54,10 +54,10 @@ function mgr.getBlueprintVariables(e)
             return results
             ---
         elseif cb.type == defines.control_behavior.type.train_stop then
-            local results = {table.unpack(checkGenericVariables(cb))}
-            table.insert(results,getVariable((cb.stopped_train_signal or {}).name))
-            table.insert(results,getVariable((cb.trains_count_signal or {}).name))
-            table.insert(results,getVariable((cb.trains_limit_signal or {}).name))
+            local results = { table.unpack(checkGenericVariables(cb)) }
+            table.insert(results, getVariable((cb.stopped_train_signal or {}).name))
+            table.insert(results, getVariable((cb.trains_count_signal or {}).name))
+            table.insert(results, getVariable((cb.trains_limit_signal or {}).name))
             return results
             ---
         elseif cb.type == defines.control_behavior.type.decider_combinator then
@@ -86,7 +86,7 @@ function mgr.getBlueprintVariables(e)
             return checkGenericVariables(cb)
             ---
         elseif cb.type == defines.control_behavior.type.accumulator then
-            return {getVariable((cb.output_signal or {}).name)}
+            return { getVariable((cb.output_signal or {}).name) }
             ---
         elseif cb.type == defines.control_behavior.type.rail_signal then
             local results = {}
@@ -224,13 +224,15 @@ function mgr.applyNames(settings, entities)
     for k, v in pairs(entities) do
         if v.valid then
             for w in v.backer_name:gmatch("%[.-%]") do -- find all variables
-                local vg,vv = w:match("(virtual%-signal%=(.-))%]") -- get the replacement text (vg) and the variable name (vv)
-                vg = vg:gsub("%-", "%%-") -- escape the replament text
-                if settings[vv] then
-                    local name = settings[vv].name
-                    local type = settings[vv].type
-                    if type == "virtual" then type = "virtual-signal" end
-                    v.backer_name = v.backer_name:gsub(vg, type.."="..name) -- replace variable with value from settings
+                local vg, vv = w:match("(virtual%-signal%=(.-))%]") -- get the replacement text (vg) and the variable name (vv)
+                if vg and vv then
+                    vg = vg:gsub("%-", "%%-") -- escape the replament text
+                    if settings[vv] then
+                        local name = settings[vv].name
+                        local type = settings[vv].type
+                        if type == "virtual" then type = "virtual-signal" end
+                        v.backer_name = v.backer_name:gsub(vg, type .. "=" .. name) -- replace variable with value from settings
+                    end
                 end
             end
         end
