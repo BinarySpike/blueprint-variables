@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.0.1
+Date: 2023-01-22
+  Info:
+    - Initial Release
+---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 2023-01-25
+  Features:
+    - Apply screen only shows identified variables
+  Bugfixes:
+    - Fixed combinators
+    - Fixed station names
+---------------------------------------------------------------------------------------------------
+Version: 0.0.3
+Date: 2023-10-26
+  Bugfixes:
+    - Fixed GUI display regression
+---------------------------------------------------------------------------------------------------
+Version: 0.0.4
+Date: 2023-03-12
+  Bugfixes:
+    - Fixed GUI not displaying when placing from blueprint library—as apposed to player inventory.

@@ -27,7 +27,7 @@ local function processEntityBuiltEvent(event)
 end
 
 script.on_event(defines.events.on_built_entity, function(event)
-    if (event.stack.is_blueprint or event.stack.is_blueprint_book) then
+    if (event.stack.is_blueprint or event.stack.is_blueprint_book or game.players[event.player_index].is_cursor_blueprint()) then
 
         local player = game.players[event.player_index]
         local playerData = global.players[event.player_index]
@@ -100,6 +100,14 @@ end)
 
 script.on_event(defines.events.on_robot_built_entity, function(event)
     processEntityBuiltEvent(event)
+end)
+
+script.on_event(defines.events.script_raised_built, function(event)
+    //processEntityBuiltEvent(event);
+end)
+
+script.on_event(defines.events.script_raised_revive, function(event)
+    //processEntityBuiltEvent(event);
 end)
 
 function on_init()
