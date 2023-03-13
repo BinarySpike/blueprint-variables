@@ -102,14 +102,6 @@ script.on_event(defines.events.on_robot_built_entity, function(event)
     processEntityBuiltEvent(event)
 end)
 
-script.on_event(defines.events.script_raised_built, function(event)
-    //processEntityBuiltEvent(event);
-end)
-
-script.on_event(defines.events.script_raised_revive, function(event)
-    //processEntityBuiltEvent(event);
-end)
-
 function on_init()
     if not global.players then
         global.players = {}
