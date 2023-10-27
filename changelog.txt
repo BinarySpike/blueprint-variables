@@ -13,7 +13,7 @@ Date: 2023-01-25
     - Fixed station names
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.3
-Date: 2023-10-26
+Date: 2023-01-26
   Bugfixes:
     - Fixed GUI display regression
 ---------------------------------------------------------------------------------------------------
@@ -21,3 +21,19 @@ Version: 0.0.4
 Date: 2023-03-12
   Bugfixes:
     - Fixed GUI not displaying when placing from blueprint library—as apposed to player inventory.
+---------------------------------------------------------------------------------------------------
+Version: 0.0.5
+Date: 2023-10-27
+  Major Features:
+    - Added support for train schedules and train wait conditions
+    - Added support for logistic chests and filter inserters
+  Features:
+    - Added support for splitter output filter
+    - Added support for programmable speaker alert icon & alert text
+    - Added support for Item stack size variables in circuit constant conditions and logistic requests
+  Changes:
+    - [Breaking Change] - Variables changed from 'virtual-signal' to 'item', 'fluid', and 'virtual-signal' to allow for Logistics and Filter support.
+    - Removed "Calculated" variables 1 through 4 and added "Circuit" signals 1 and 2 (red and green wire icon).
+  Bugfixes:
+    - Fixed so many crashes
+    - Fixed crash when blueprinting mod combinators that had empty capacity for conditions. (Fixes crash wtih Circuit HUD V2)

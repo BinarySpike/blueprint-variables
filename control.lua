@@ -24,6 +24,30 @@ local function processEntityBuiltEvent(event)
             event.created_entity.tags = tags
         end
     end
+    if tags and tags.bv and tags.bv.hasTrainVariables then
+      if global.players[tags.bv.player_index] then
+          table.insert(global.players[tags.bv.player_index].train_entities, event.created_entity)
+      else
+          tags.bv = nil
+          event.created_entity.tags = tags
+      end
+    end
+    if tags and tags.bv and tags.bv.hasLogisticVariables then
+      if global.players[tags.bv.player_index] then
+        table.insert(global.players[tags.bv.player_index].logistic_entities, event.created_entity)
+      else
+          tags.bv = nil
+          event.created_entity.tags = tags
+      end
+    end
+    if tags and tags.bv and tags.bv.hasFilterVariables then
+      if global.players[tags.bv.player_index] then
+        table.insert(global.players[tags.bv.player_index].filter_entities, event.created_entity)
+      else
+          tags.bv = nil
+          event.created_entity.tags = tags
+      end
+    end
 end
 
 script.on_event(defines.events.on_built_entity, function(event)
@@ -34,14 +58,21 @@ script.on_event(defines.events.on_built_entity, function(event)
         local session_id = getSessionId(event.player_index, event.tick)
 
         if playerData and playerData.session_id ~= session_id then
-            error("Player has existing session and is trying to create another")
+          return
+            --error("Player has existing session and is trying to create another")
         end
 
         local bpVariables = mgr.getBlueprintVariables(event.created_entity)
         local nameVariables = mgr.getNameVariables(event.created_entity)
         local logisticVariables = mgr.getLogisticVariables(event.created_entity);
+        local filterVariables = mgr.getFilterVariables(event.created_entity);
+        local trainVariables = {};
 
-        if next(bpVariables) or next(nameVariables) or next(logisticVariables) then
+        if event.created_entity.ghost_type == 'locomotive' then
+          trainVariables = mgr.getTrainVariables(event.stack.get_blueprint_entities());
+        end
+
+        if next(bpVariables) or next(nameVariables) or next(logisticVariables) or next(filterVariables) or next(trainVariables) then
             local tags = event.created_entity.tags
             if not tags then tags = {} end
             if not tags.bv then tags.bv = {} end
@@ -50,6 +81,8 @@ script.on_event(defines.events.on_built_entity, function(event)
                 hasBlueprintVariable = next(bpVariables) ~= nil,
                 hasVariableInName = next(nameVariables) ~= nil,
                 hasLogisticVariables = next(logisticVariables) ~= nil,
+                hasFilterVariables = next(filterVariables) ~= nil,
+                hasTrainVariables = next(trainVariables) ~= nil,
                 session_id = session_id,
                 player_index = event.player_index
             }
@@ -63,7 +96,8 @@ script.on_event(defines.events.on_built_entity, function(event)
                     entities = {},
                     entities_with_names = {},
                     logistic_entities = {},
-                    --player = player,
+                    filter_entities = {},
+                    train_entities = {},
                     settings = {},
                     refs = {},
                     activeVariables = {}
@@ -82,6 +116,12 @@ script.on_event(defines.events.on_built_entity, function(event)
             if next(logisticVariables) then
                 table.insert(playerData.logistic_entities, event.created_entity)
             end
+            if next(filterVariables) then
+              table.insert(playerData.filter_entities, event.created_entity)
+            end
+            if next(trainVariables) then
+              table.insert(playerData.train_entities, event.created_entity)
+            end
 
             for _,v in pairs(bpVariables) do
                 playerData.activeVariables[v] = true
@@ -89,8 +129,14 @@ script.on_event(defines.events.on_built_entity, function(event)
             for _,v in pairs(nameVariables) do
                 playerData.activeVariables[v] = true
             end
+            for _,v in pairs(filterVariables) do
+              playerData.activeVariables[v] = true
+          end
             for _,v in pairs(logisticVariables) do
                 playerData.activeVariables[v] = true
+            end
+            for _,v in pairs(trainVariables) do
+              playerData.activeVariables[v] = true
             end
         end
     else

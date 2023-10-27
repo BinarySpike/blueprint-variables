@@ -35,9 +35,10 @@ local function createBlueprintVariable(name)
             name = string.format("blueprint-variable-%s", name);
         },
         { -- entity
-            type = "virtual-signal",
+            type = "item",
             subgroup = string.format("blueprint-variable-%s", name),
             name = string.format("blueprint-variable-%s-entity", name),
+            stack_size = 50,
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
@@ -57,10 +58,38 @@ local function createBlueprintVariable(name)
             icon_size = 64, icon_mipmaps = 4,
             order = "a",
         },
+        { -- fluid
+            type = "fluid",
+            subgroup = string.format("blueprint-variable-%s", name),
+            name = string.format("blueprint-variable-%s-fluid", name),
+            default_temperature = 25,
+            heat_capacity = "1KJ",
+            base_color = {r=0.4, g=0.6, b=0.1},
+            flow_color = { r=0.6, g=0.8, b=0.2},
+            max_temperature = 100,
+            icons = {
+                {
+                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                },
+                {
+                    icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+                    scale = 0.25,
+                    shift = { -9, -9 }
+                },
+                {
+                    icon = "__base__/graphics/icons/fluid/crude-oil.png",
+                    icon_size = 64, icon_mipmaps = 4,
+                    scale = 0.3125
+                }
+            },
+            icon_size = 64, icon_mipmaps = 4,
+            order = "b",
+        },
         { -- stack size
-            type = "virtual-signal",
+            type = "item",
             subgroup = string.format("blueprint-variable-%s", name),
             name = string.format("blueprint-variable-%s-stack-size", name),
+            stack_size = 1,
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
@@ -78,12 +107,58 @@ local function createBlueprintVariable(name)
                 },
             },
             icon_size = 64, icon_mipmaps = 4,
-            order = "b",
+            order = "c",
         },
-        {
+        { -- stack size
             type = "virtual-signal",
             subgroup = string.format("blueprint-variable-%s", name),
+            name = string.format("blueprint-variable-%s-circuit-1", name),
+            icons = {
+                {
+                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                },
+                {
+                  icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+                  scale = 0.25,
+                  shift = { -9, -9 }
+                },
+                {
+                  icon = "__base__/graphics/icons/green-wire.png",
+                  icon_size = 64, icon_mipmaps = 4,
+                  scale = 0.3125
+                },
+            },
+            icon_size = 64, icon_mipmaps = 4,
+            order = "d",
+        },
+        { -- stack size
+            type = "virtual-signal",
+            subgroup = string.format("blueprint-variable-%s", name),
+            name = string.format("blueprint-variable-%s-circuit-2", name),
+            icons = {
+                {
+                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                },
+                {
+                  icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+                  scale = 0.25,
+                  shift = { -9, -9 }
+                },
+                {
+                  icon = "__base__/graphics/icons/red-wire.png",
+                  icon_size = 64, icon_mipmaps = 4,
+                  scale = 0.3125
+                },
+            },
+            icon_size = 64, icon_mipmaps = 4,
+            order = "e",
+        },
+        --[[
+        {
+            type = "item",
+            subgroup = string.format("blueprint-variable-%s", name),
             name = string.format("blueprint-variable-%s-arithmetic-1", name),
+            stack_size = 50,
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
@@ -104,12 +179,13 @@ local function createBlueprintVariable(name)
                 },
             },
             icon_size = 64, icon_mipmaps = 4,
-            order = "c",
+            order = "d",
         },
         {
-            type = "virtual-signal",
+            type = "item",
             subgroup = string.format("blueprint-variable-%s", name),
             name = string.format("blueprint-variable-%s-arithmetic-2", name),
+            stack_size = 50,
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
@@ -130,12 +206,13 @@ local function createBlueprintVariable(name)
                 },
             },
             icon_size = 64, icon_mipmaps = 4,
-            order = "d",
+            order = "e",
         },
         {
-            type = "virtual-signal",
+            type = "item",
             subgroup = string.format("blueprint-variable-%s", name),
             name = string.format("blueprint-variable-%s-arithmetic-3", name),
+            stack_size = 50,
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
@@ -156,12 +233,13 @@ local function createBlueprintVariable(name)
                 },
             },
             icon_size = 64, icon_mipmaps = 4,
-            order = "e",
+            order = "f",
         },
         {
-            type = "virtual-signal",
+            type = "item",
             subgroup = string.format("blueprint-variable-%s", name),
             name = string.format("blueprint-variable-%s-arithmetic-4", name),
+            stack_size = 50,
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
@@ -182,8 +260,8 @@ local function createBlueprintVariable(name)
                 },
             },
             icon_size = 64, icon_mipmaps = 4,
-            order = "f",
-        }
+            order = "g",
+        }--]]
     })
 end
 
