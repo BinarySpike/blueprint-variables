@@ -14,6 +14,7 @@ data:extend({
         icons = {
             {
                 icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                icon_size = 64, icon_mipmaps = 4,
             },
             {
                 icon = "__base__/graphics/icons/blueprint-book.png",
@@ -42,6 +43,7 @@ local function createBlueprintVariable(name)
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                    icon_size = 64, icon_mipmaps = 4,
                 },
                 {
                     icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
@@ -93,6 +95,7 @@ local function createBlueprintVariable(name)
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                    icon_size = 64, icon_mipmaps = 4,
                 },
                 {
                     icon = "__blueprint-variables__/graphics/stack.png",
@@ -116,6 +119,7 @@ local function createBlueprintVariable(name)
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                    icon_size = 64, icon_mipmaps = 4,
                 },
                 {
                   icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
@@ -138,6 +142,7 @@ local function createBlueprintVariable(name)
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
+                    icon_size = 64, icon_mipmaps = 4,
                 },
                 {
                   icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
