@@ -42,17 +42,19 @@ function mgr.getTrainVariables(eArr)
   local results = {}
   for eKey, e in pairs(eArr) do
     if e.name == 'locomotive' then
-      for scheduleKey, schedule in pairs(e.schedule) do
-        for w in schedule.station:gmatch("%[.-%]") do
-          table.insert(results, getVariable(w:match(newNewMatch))) -- if variable, insert into results
-        end
-        for waitConditionKey, waitCondition in pairs(schedule.wait_conditions) do
-          if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
-            if waitCondition.condition.first_signal then
-              table.insert(results, getVariable(waitCondition.condition.first_signal.name:match(newTrainMatch)));
-            end
-            if waitCondition.condition.second_signal then
-              table.insert(results, getVariable(waitCondition.condition.second_signal.name:match(newTrainMatch)));
+      if e.schedule then
+        for scheduleKey, schedule in pairs(e.schedule) do
+          for w in schedule.station:gmatch("%[.-%]") do
+            table.insert(results, getVariable(w:match(newNewMatch))) -- if variable, insert into results
+          end
+          for waitConditionKey, waitCondition in pairs(schedule.wait_conditions) do
+            if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
+              if waitCondition.condition.first_signal then
+                table.insert(results, getVariable(waitCondition.condition.first_signal.name:match(newTrainMatch)));
+              end
+              if waitCondition.condition.second_signal then
+                table.insert(results, getVariable(waitCondition.condition.second_signal.name:match(newTrainMatch)));
+              end
             end
           end
         end

@@ -8,44 +8,46 @@ end
 local function processEntityBuiltEvent(event)
     local tags = event.tags
 
+    local entity 
+
     if tags and tags.bv and tags.bv.hasBlueprintVariable then
         if global.players[tags.bv.player_index] then -- if the session exists, build it
             table.insert(global.players[tags.bv.player_index].entities, event.created_entity)
         else
-            tags.bv = nil -- session no longer exists, remove the tag
-            event.created_entity.tags = tags
+            --tags.bv = nil -- session no longer exists, remove the tag
+            --event.created_entity.tags = tags
         end
     end
     if tags and tags.bv and tags.bv.hasVariableInName then
         if global.players[tags.bv.player_index] then
             table.insert(global.players[tags.bv.player_index].entities_with_names, event.created_entity)
         else
-            tags.bv = nil
-            event.created_entity.tags = tags
+            --tags.bv = nil
+            --event.created_entity.tags = tags
         end
     end
     if tags and tags.bv and tags.bv.hasTrainVariables then
       if global.players[tags.bv.player_index] then
           table.insert(global.players[tags.bv.player_index].train_entities, event.created_entity)
       else
-          tags.bv = nil
-          event.created_entity.tags = tags
+          --tags.bv = nil
+          --event.created_entity.tags = tags
       end
     end
     if tags and tags.bv and tags.bv.hasLogisticVariables then
       if global.players[tags.bv.player_index] then
         table.insert(global.players[tags.bv.player_index].logistic_entities, event.created_entity)
       else
-          tags.bv = nil
-          event.created_entity.tags = tags
+          --tags.bv = nil
+          --event.created_entity.tags = tags
       end
     end
     if tags and tags.bv and tags.bv.hasFilterVariables then
       if global.players[tags.bv.player_index] then
         table.insert(global.players[tags.bv.player_index].filter_entities, event.created_entity)
       else
-          tags.bv = nil
-          event.created_entity.tags = tags
+          --tags.bv = nil
+          --event.created_entity.tags = tags
       end
     end
 end
@@ -68,7 +70,8 @@ script.on_event(defines.events.on_built_entity, function(event)
         local filterVariables = mgr.getFilterVariables(event.created_entity);
         local trainVariables = {};
 
-        if event.created_entity.ghost_type == 'locomotive' then
+
+        if event.created_entity.ghost_type == 'locomotive' and event.stack.valid_for_read then
           trainVariables = mgr.getTrainVariables(event.stack.get_blueprint_entities());
         end
 
@@ -146,6 +149,11 @@ end)
 
 script.on_event(defines.events.on_robot_built_entity, function(event)
     processEntityBuiltEvent(event)
+end)
+
+script.on_event(defines.events.script_raised_revive, function(event)
+  event.created_entity = event.entity
+  processEntityBuiltEvent(event)
 end)
 
 function on_init()
