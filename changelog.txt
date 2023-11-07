@@ -37,3 +37,11 @@ Date: 2023-10-27
   Bugfixes:
     - Fixed so many crashes
     - Fixed crash when blueprinting mod combinators that had empty capacity for conditions. (Fixes crash wtih Circuit HUD V2)
+---------------------------------------------------------------------------------------------------
+Version: 0.0.6
+Date: 2023-11-07
+  Features:
+    - Added experimental support for construction bots (script_revive support for 3rd party mods)
+  Bugfixes:
+    - Fixed crash when placing locomotive without schedule
+    - Fixed crash when placing blueprint from blueprint library
