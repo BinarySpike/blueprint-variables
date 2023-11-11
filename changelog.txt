@@ -45,3 +45,9 @@ Date: 2023-11-07
   Bugfixes:
     - Fixed crash when placing locomotive without schedule
     - Fixed crash when placing blueprint from blueprint library
+---------------------------------------------------------------------------------------------------
+Version: 0.0.7
+Date: 2023-11-11
+  Bugfixes:
+    - Fixed crash in editor
+    - Fixed GUI not displaying when placing blueprint that contains only locomotive variables
