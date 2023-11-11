@@ -70,8 +70,11 @@ script.on_event(defines.events.on_built_entity, function(event)
         local filterVariables = mgr.getFilterVariables(event.created_entity);
         local trainVariables = {};
 
+        if event.created_entity.type == 'entity-ghost' and event.created_entity.ghost_type == 'locomotive' and event.stack.valid_for_read then
+          trainVariables = mgr.getTrainVariables(event.stack.get_blueprint_entities());
+        end
 
-        if event.created_entity.ghost_type == 'locomotive' and event.stack.valid_for_read then
+        if event.created_entity.type == 'locomotive' then
           trainVariables = mgr.getTrainVariables(event.stack.get_blueprint_entities());
         end
 
