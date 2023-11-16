@@ -101,7 +101,7 @@ function mgr.getFilterVariables(e)
   -- end
 
   if eType == 'programmable-speaker' then
-    table.insert(results, getVariable(e.alert_parameters.icon_signal_id.name))
+    table.insert(results, getVariable((e.alert_parameters.icon_signal_id or {}).name))
     
     for w in e.alert_parameters.alert_message:gmatch("%[.-%]") do
       table.insert(results, getVariable(w:match(newNewMatch))) -- if variable, insert into results
