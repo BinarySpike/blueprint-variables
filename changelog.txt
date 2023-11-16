@@ -51,3 +51,11 @@ Date: 2023-11-11
   Bugfixes:
     - Fixed crash in editor
     - Fixed GUI not displaying when placing blueprint that contains only locomotive variables
+---------------------------------------------------------------------------------------------------
+Version: 0.0.8
+Date: 2023-11-15
+  Bugfixes:
+    - Fixed crash when certain signals were empty - Big thanks to the contribution from bgamari!
+    - Fixed crash with infinity chests - Another big thanks to bgamari's contribution!
+    - Fixed GUI not displaying when _only_ train schedule station names had variables in them
+    - Fixed some editor/sandbox crashes when pasting blueprints from Player/Game blueprint libraries.

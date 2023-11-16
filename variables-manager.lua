@@ -47,13 +47,15 @@ function mgr.getTrainVariables(eArr)
           for w in schedule.station:gmatch("%[.-%]") do
             table.insert(results, getVariable(w:match(newNewMatch))) -- if variable, insert into results
           end
-          for waitConditionKey, waitCondition in pairs(schedule.wait_conditions) do
-            if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
-              if waitCondition.condition.first_signal then
-                table.insert(results, getVariable(waitCondition.condition.first_signal.name:match(newTrainMatch)));
-              end
-              if waitCondition.condition.second_signal then
-                table.insert(results, getVariable(waitCondition.condition.second_signal.name:match(newTrainMatch)));
+          if schedule.wait_conditions then
+            for waitConditionKey, waitCondition in pairs(schedule.wait_conditions) do
+              if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
+                if waitCondition.condition.first_signal then
+                  table.insert(results, getVariable(waitCondition.condition.first_signal.name:match(newTrainMatch)));
+                end
+                if waitCondition.condition.second_signal then
+                  table.insert(results, getVariable(waitCondition.condition.second_signal.name:match(newTrainMatch)));
+                end
               end
             end
           end
