@@ -101,7 +101,7 @@ function mgr.getFilterVariables(e)
   -- end
 
   if eType == 'programmable-speaker' then
-    table.insert(results, getVariable(e.alert_parameters.icon_signal_id.name))
+    table.insert(results, getVariable((e.alert_parameters.icon_signal_id or {}).name))
     
     for w in e.alert_parameters.alert_message:gmatch("%[.-%]") do
       table.insert(results, getVariable(w:match(newNewMatch))) -- if variable, insert into results
@@ -232,14 +232,14 @@ local function updateCircuitCondition(def, settings)
 
     d.first_signal = updateSignal(d.first_signal, settings)
     
-    if d.second_signal and d.second_signal.name:match("^blueprint%-variable%-%d%-stack%-size$") then
+    if d.second_signal and d.second_signal.name and d.second_signal.name:match("^blueprint%-variable%-%d%-stack%-size$") then
       local num = d.second_signal.name:match("^blueprint%-variable%-(%d)")
       local varName = string.format("blueprint-variable-%s-entity", num)
       local itemName = settings[varName].name
       local stackSize = game.item_prototypes[itemName].stack_size;
       d.second_signal = nil;
       d.constant = stackSize;
-    else
+    elseif d.second_signal and d.second_signal.name then
       d.second_signal = updateSignal(d.second_signal, settings)
     end
 
@@ -256,7 +256,7 @@ local function updateControlBehavior(cb, settings)
         cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
         ---
     elseif cb.type == defines.control_behavior.type.inserter then
-        cb.circuit_stack_control_signal = updateSignal(cb.circuit_stack_control_signal, settings)
+        cb.circuit_stack_control_signal = updateSignal(cb.circuit_stack_control_signal or {}, settings)
         cb.circuit_condition = updateCircuitCondition(cb.circuit_condition, settings)
         cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
         ---
@@ -265,17 +265,17 @@ local function updateControlBehavior(cb, settings)
         cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
         ---
     elseif cb.type == defines.control_behavior.type.roboport then
-        cb.available_logistic_output_signal = updateSignal(cb.available_logistic_output_signal, settings)
-        cb.total_logistic_output_signal = updateSignal(cb.total_logistic_output_signal, settings)
-        cb.available_construction_output_signal = updateSignal(cb.available_construction_output_signal, settings)
-        cb.total_construction_output_signal = updateSignal(cb.total_construction_output_signal, settings)
+        cb.available_logistic_output_signal = updateSignal(cb.available_logistic_output_signal or {}, settings)
+        cb.total_logistic_output_signal = updateSignal(cb.total_logistic_output_signal or {}, settings)
+        cb.available_construction_output_signal = updateSignal(cb.available_construction_output_signal or {}, settings)
+        cb.total_construction_output_signal = updateSignal(cb.total_construction_output_signal or {}, settings)
         ---
     elseif cb.type == defines.control_behavior.type.train_stop then
         cb.circuit_condition = updateCircuitCondition(cb.circuit_condition, settings)
         cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
-        cb.stopped_train_signal = updateSignal(cb.stopped_train_signal, settings)
-        cb.trains_count_signal = updateSignal(cb.trains_count_signal, settings)
-        cb.trains_limit_signal = updateSignal(cb.trains_limit_signal, settings)
+        cb.stopped_train_signal = updateSignal(cb.stopped_train_signal or {}, settings)
+        cb.trains_count_signal = updateSignal(cb.trains_count_signal or {}, settings)
+        cb.trains_limit_signal = updateSignal(cb.trains_limit_signal or {}, settings)
         ---
     elseif cb.type == defines.control_behavior.type.decider_combinator then
         cb.parameters = updateCircuitCondition(cb.parameters, settings)
@@ -307,23 +307,23 @@ local function updateControlBehavior(cb, settings)
         cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
         ---
     elseif cb.type == defines.control_behavior.type.accumulator then
-        cb.output_signal = updateSignal(cb.output_signal, settings)
+        cb.output_signal = updateSignal(cb.output_signal or {}, settings)
         ---
     elseif cb.type == defines.control_behavior.type.rail_signal then
         cb.circuit_condition = updateCircuitCondition(cb.circuit_condition, settings)
-        cb.red_signal = updateSignal(cb.red_signal, settings)
-        cb.orange_signal = updateSignal(cb.orange_signal, settings)
-        cb.green_signal = updateSignal(cb.green_signal, settings)
+        cb.red_signal = updateSignal(cb.red_signal or {}, settings)
+        cb.orange_signal = updateSignal(cb.orange_signal or {}, settings)
+        cb.green_signal = updateSignal(cb.green_signal or {}, settings)
         ---
     elseif cb.type == defines.control_behavior.type.rail_chain_signal then
-        cb.red_signal = updateSignal(cb.red_signal, settings)
-        cb.orange_signal = updateSignal(cb.orange_signal, settings)
-        cb.green_signal = updateSignal(cb.green_signal, settings)
-        cb.blue_signal = updateSignal(cb.blue_signal, settings)
+        cb.red_signal = updateSignal(cb.red_signal or {}, settings)
+        cb.orange_signal = updateSignal(cb.orange_signal or {}, settings)
+        cb.green_signal = updateSignal(cb.green_signal or {}, settings)
+        cb.blue_signal = updateSignal(cb.blue_signal or {}, settings)
         ---
     elseif cb.type == defines.control_behavior.type.wall then
         cb.circuit_condition = updateCircuitCondition(cb.circuit_condition, settings)
-        cb.output_signal = updateSignal(cb.output_signal, settings)
+        cb.output_signal = updateSignal(cb.output_signal or {}, settings)
         ---
     elseif cb.type == defines.control_behavior.type.mining_drill then
         cb.circuit_condition = updateCircuitCondition(cb.circuit_condition, settings)
