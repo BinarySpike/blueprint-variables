@@ -86,7 +86,7 @@ function mgr.getFilterVariables(e)
     eType = e.type
   end
 
-  if e.filter_slot_count > 0 then
+  if e.filter_slot_count > 0 and eType ~= 'infinity-container' then    
     for i=1,e.filter_slot_count do
       table.insert(results, getVariable(e.get_filter(i)));
     end
