@@ -66,6 +66,27 @@ function mgr.getTrainVariables(eArr)
   return results
 end
 
+function mgr.getInventoryFilterVariables(eArr)
+  local results = {}
+  
+  for eKey, e in pairs(eArr) do
+    local filters
+    if e.inventory and e.inventory.filters then
+      filters = e.inventory.filters
+    elseif e.filters then
+      filters = e.filters
+    else
+      goto continue
+    end
+
+    for invFilterKey, invFilter in pairs(filters) do
+      table.insert(results, getVariable(invFilter.name))
+    end
+    ::continue::
+  end
+  return results
+end
+
 function mgr.getLogisticVariables(e)
   local results = {}
   if e.request_slot_count > 0 then
@@ -97,10 +118,6 @@ function mgr.getFilterVariables(e)
   if eType == 'splitter' and e.splitter_filter then
     table.insert(results, getVariable(e.splitter_filter.name));
   end
-
-  -- if eType == 'cargo-wagon' then
-  --   --table.insert(results, "NOTHING");
-  -- end
 
   if eType == 'programmable-speaker' then
     table.insert(results, getVariable((e.alert_parameters.icon_signal_id or {}).name))
@@ -425,7 +442,7 @@ function mgr.applyFilterVariables(settings, entities)
         
         local alert_parameters = e.alert_parameters
 
-        if e.valid and settings[alert_parameters.icon_signal_id.name] then
+        if e.valid and alert_parameters.icon_signal_id and settings[alert_parameters.icon_signal_id.name] then
           alert_parameters.icon_signal_id.type = settings[alert_parameters.icon_signal_id.name].type
           alert_parameters.icon_signal_id.name = settings[alert_parameters.icon_signal_id.name].name
           e.alert_parameters = alert_parameters
@@ -491,6 +508,42 @@ function mgr.applyTrainVariables(settings, entities)
         end
       end
       e.train.schedule = trainSchedule
+    end
+
+    if e.valid and e.type == 'entity-ghost' then
+      local tags = e.tags
+      if not tags then tags = {} end
+      if not tags.bvsettings then tags.bvsettings = {} end
+      
+      tags.bvsettings = settings
+
+      e.tags = tags
+    end
+  end
+end
+
+function mgr.applyInventoryFilterVariables(settings, entities)
+  for _, e in pairs(entities) do
+    if e.valid and e.type ~= 'entity-ghost' then
+      for i = 1,e.get_max_inventory_index(),1 do
+        local inv = e.get_inventory(i)
+        if inv and inv.supports_filters() and inv.is_filtered() then
+          for n = 1, #inv, 1 do
+            local variable = inv.get_filter(n)
+            if variable and settings[variable] then
+              inv.set_filter(n, settings[variable].name)
+            end
+          end
+        end
+      end
+    elseif e.valid and e.type == 'entity-ghost' then
+      local tags = e.tags
+      if not tags then tags = {} end
+      if not tags.bvsettings then tags.bvsettings = {} end
+      
+      tags.bvsettings = settings
+
+      e.tags = tags
     end
   end
 end

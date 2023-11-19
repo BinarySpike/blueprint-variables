@@ -46,6 +46,7 @@ function mygui.confirm(event)
     mgr.applyLogisticVariables(global.players[event.player_index].settings, global.players[event.player_index].logistic_entities)
     mgr.applyFilterVariables(global.players[event.player_index].settings, global.players[event.player_index].filter_entities)
     mgr.applyTrainVariables(global.players[event.player_index].settings, global.players[event.player_index].train_entities)
+    mgr.applyInventoryFilterVariables(global.players[event.player_index].settings, global.players[event.player_index].inventoryFilter_entities)
 
     global.players[event.player_index].refs.bv_window.destroy()
     global.players[event.player_index] = nil
