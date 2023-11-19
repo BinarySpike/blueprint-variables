@@ -59,3 +59,11 @@ Date: 2023-11-15
     - Fixed crash with infinity chests - Another big thanks to bgamari's contribution!
     - Fixed GUI not displaying when _only_ train schedule station names had variables in them
     - Fixed some editor/sandbox crashes when pasting blueprints from Player/Game blueprint libraries.
+---------------------------------------------------------------------------------------------------
+Version: 0.0.9
+Date: 2023-11-19
+  Features:
+    - Added Cargo Wagon inventory filter and modded filter chests support.
+  Bugfixes:
+    - Fixed crash with programmable speakers when you set blank conditions/variables
+    - Fixed bug where train schedule would not update if you confirmed the GUI before something had built the locomotive
