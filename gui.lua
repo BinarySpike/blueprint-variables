@@ -41,12 +41,15 @@ function mygui.close(event)
 end
 
 function mygui.confirm(event)
-    mgr.applyVariables(global.players[event.player_index].settings, global.players[event.player_index].entities)
-    mgr.applyNames(global.players[event.player_index].settings, global.players[event.player_index].entities_with_names)
-    mgr.applyLogisticVariables(global.players[event.player_index].settings, global.players[event.player_index].logistic_entities)
-    mgr.applyFilterVariables(global.players[event.player_index].settings, global.players[event.player_index].filter_entities)
-    mgr.applyTrainVariables(global.players[event.player_index].settings, global.players[event.player_index].train_entities)
-    mgr.applyInventoryFilterVariables(global.players[event.player_index].settings, global.players[event.player_index].inventoryFilter_entities)
+    local settings = mgr.calculateVariableSettings(global.players[event.player_index].settings);
+    local player = global.players[event.player_index];
+
+    mgr.applyVariables(settings, player.entities)
+    mgr.applyNames(settings, player.entities_with_names)
+    mgr.applyLogisticVariables(settings, player.logistic_entities)
+    mgr.applyFilterVariables(settings, player.filter_entities)
+    mgr.applyTrainVariables(settings, player.train_entities)
+    mgr.applyInventoryFilterVariables(settings, player.inventoryFilter_entities)
 
     global.players[event.player_index].refs.bv_window.destroy()
     global.players[event.player_index] = nil
@@ -82,7 +85,8 @@ function mygui.update_active_variables(player_index)
 
         local strVariableEntity = string.format("blueprint-variable-%s-entity", i)
         local strVariableStack = string.format("blueprint-variable-%s-stack-size", i)
-        if activeVariables[strVariableEntity] or activeVariables[strVariableStack] then
+        local strFurnaceStack = string.format("blueprint-variable-%s-furnace-result", i)
+        if activeVariables[strVariableEntity] or activeVariables[strVariableStack] or activeVariables[strFurnaceStack] then
             table.insert(parentFlow.children, {
                     type = "choose-elem-button",
                     name = strVariableEntity,

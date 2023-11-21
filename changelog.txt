@@ -67,3 +67,8 @@ Date: 2023-11-19
   Bugfixes:
     - Fixed crash with programmable speakers when you set blank conditions/variables
     - Fixed bug where train schedule would not update if you confirmed the GUI before something had built the locomotive
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2023-11-20
+  Features:
+    - Added "Furnace Result" variable.  E.g. Selecting "iron-ore" and the variable will be replaced with "iron-plate".
