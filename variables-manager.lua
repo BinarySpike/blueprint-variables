@@ -369,7 +369,9 @@ function mgr.calculateVariableSettings(settings)
 
       if furnaceResult and #furnaceResult == 1 then
         for furnaceKey, furnaceValue in pairs(furnaceResult) do
-          settings[furnaceName] = { name = furnaceKey, type="item" }
+          if #furnaceValue.products then
+            settings[furnaceName] = { name = furnaceValue.products[1].name, type="item" }
+          end
           break
         end
       end
