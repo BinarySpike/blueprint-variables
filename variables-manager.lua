@@ -359,7 +359,7 @@ function mgr.calculateVariableSettings(settings)
   for varNum = 1, 9, 1 do
     local entityName = string.format("blueprint-variable-%s-entity", varNum);
     local furnaceName = string.format("blueprint-variable-%s-furnace-result", varNum);
-    if settings[entityName] ~= nil then
+    if settings[entityName] ~= nil and settings[entityName].name then
       local furnaceResult = game.get_filtered_recipe_prototypes(
         {
           {filter = "has-ingredient-item", elem_filters = {{filter = "name", name = settings[entityName].name}}},

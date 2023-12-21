@@ -18,6 +18,7 @@ data:extend({
             },
             {
                 icon = "__base__/graphics/icons/blueprint-book.png",
+				icon_size = 64, icon_mipmaps = 4,
                 scale = 0.625,
             }
         },
@@ -102,6 +103,7 @@ local function createBlueprintVariable(name)
                 },
                 {
                     icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+					icon_size = 64, icon_mipmaps = 4,
                     scale = 0.25,
                     shift = { -9, -9 }
                 },
@@ -121,9 +123,11 @@ local function createBlueprintVariable(name)
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
+					icon_size = 64, icon_mipmaps = 4,
                 },
                 {
                     icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+					icon_size = 64, icon_mipmaps = 4,
                     scale = 0.25,
                     shift = { -9, -9 }
                 },
@@ -147,6 +151,7 @@ local function createBlueprintVariable(name)
                 },
                 {
                   icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+				  icon_size = 64, icon_mipmaps = 4,
                   scale = 0.25,
                   shift = { -9, -9 }
                 },
@@ -170,6 +175,7 @@ local function createBlueprintVariable(name)
                 },
                 {
                   icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+				  icon_size = 64, icon_mipmaps = 4,
                   scale = 0.25,
                   shift = { -9, -9 }
                 },
