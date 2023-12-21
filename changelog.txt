@@ -72,3 +72,9 @@ Version: 0.1.1
 Date: 2023-11-20
   Features:
     - Added "Furnace Result" variable.  E.g. Selecting "iron-ore" and the variable will be replaced with "iron-plate".
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2023-12-20
+  Bugfixes:
+    - Fixed icons missing size causing other mods to crash (Angel's Refinery)
+    - Fixed refinery calculation edge case crash
