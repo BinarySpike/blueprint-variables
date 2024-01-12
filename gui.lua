@@ -265,7 +265,6 @@ function mygui.create_window(player_index)
                             style = "horizontal_flow",
                             children = {
                                 {
-
                                     type = "frame",
                                     style = "inside_shallow_frame_with_padding",
                                     children = {
@@ -321,7 +320,6 @@ function mygui.create_window(player_index)
     global.players[player_index].refs.bv_dialog_bar.drag_target = global.players[player_index].refs.bv_window
 
     player.opened = global.players[player_index].refs.bv_window
-
 end
 
 gui.add_handlers(mygui)

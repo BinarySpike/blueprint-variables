@@ -78,3 +78,4 @@ Date: 2023-12-20
   Bugfixes:
     - Fixed icons missing size causing other mods to crash (Angel's Refinery)
     - Fixed refinery calculation edge case crash
+

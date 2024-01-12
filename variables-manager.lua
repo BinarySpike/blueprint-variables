@@ -1,9 +1,5 @@
 local mgr = {}
 
---local oldMatch = "virtual%-signal%=(.-)%]"
---local oldDoubleMatch = "(virtual%-signal%=(.-))%]"
-
---local newMatch = "item=(blueprint%-variable%-.-)%]"
 local newNewMatch = "%[.-%=(blueprint%-variable%-.-)%]"
 local newTrainMatch = "(blueprint%-variable%-.+)"
 

@@ -1,13 +1,3 @@
--- data.raw["gui-style"].default.bv_sprite_style = {
---     type = "image_style",
---     name = "bv_sprite_style",
---     width = 32,
---     height = 32,
---     vertically_stretchable = "on",
---     horizontally_stretchable = "on",
---     stretch_image_to_widget_size = true,
--- }
-
 data:extend({
     {
         type = "item-group",
@@ -18,7 +8,7 @@ data:extend({
             },
             {
                 icon = "__base__/graphics/icons/blueprint-book.png",
-				icon_size = 64, icon_mipmaps = 4,
+                icon_size = 64, icon_mipmaps = 4,
                 scale = 0.625,
             }
         },
@@ -103,7 +93,7 @@ local function createBlueprintVariable(name)
                 },
                 {
                     icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-					icon_size = 64, icon_mipmaps = 4,
+          icon_size = 64, icon_mipmaps = 4,
                     scale = 0.25,
                     shift = { -9, -9 }
                 },
@@ -123,11 +113,11 @@ local function createBlueprintVariable(name)
             icons = {
                 {
                     icon = "__base__/graphics/icons/signal/signal_yellow.png",
-					icon_size = 64, icon_mipmaps = 4,
+          icon_size = 64, icon_mipmaps = 4,
                 },
                 {
                     icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-					icon_size = 64, icon_mipmaps = 4,
+          icon_size = 64, icon_mipmaps = 4,
                     scale = 0.25,
                     shift = { -9, -9 }
                 },
@@ -151,7 +141,7 @@ local function createBlueprintVariable(name)
                 },
                 {
                   icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-				  icon_size = 64, icon_mipmaps = 4,
+                  icon_size = 64, icon_mipmaps = 4,
                   scale = 0.25,
                   shift = { -9, -9 }
                 },
@@ -175,7 +165,7 @@ local function createBlueprintVariable(name)
                 },
                 {
                   icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-				  icon_size = 64, icon_mipmaps = 4,
+                  icon_size = 64, icon_mipmaps = 4,
                   scale = 0.25,
                   shift = { -9, -9 }
                 },
