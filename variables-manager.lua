@@ -37,7 +37,9 @@ end
 function mgr.getTrainVariables(eArr)
   local results = {}
   for eKey, e in pairs(eArr) do
-    if e.name == 'locomotive' then
+    local eName = e.name
+    local entity = game.entity_prototypes[eName]
+    if entity.type == 'locomotive' then
       if e.schedule then
         for scheduleKey, schedule in pairs(e.schedule) do
           for w in schedule.station:gmatch("%[.-%]") do
@@ -510,19 +512,23 @@ function mgr.applyTrainVariables(settings, entities)
           end
         end
 
+
+
         -- schedule wait conditions
-        for waitConditionKey, waitCondition in pairs(record.wait_conditions) do
-          if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
-            if waitCondition.condition.first_signal then
-              if settings[waitCondition.condition.first_signal.name] then
-                waitCondition.condition.first_signal.type = settings[waitCondition.condition.first_signal.name].type
-                waitCondition.condition.first_signal.name = settings[waitCondition.condition.first_signal.name].name
+        if (record.wait_condition) then
+          for waitConditionKey, waitCondition in pairs(record.wait_conditions) do
+            if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
+              if waitCondition.condition.first_signal then
+                if settings[waitCondition.condition.first_signal.name] then
+                  waitCondition.condition.first_signal.type = settings[waitCondition.condition.first_signal.name].type
+                  waitCondition.condition.first_signal.name = settings[waitCondition.condition.first_signal.name].name
+                end
               end
-            end
-            if waitCondition.condition.second_signal then
-              if settings[waitCondition.condition.second_signal.name] then
-                waitCondition.condition.second_signal.type = settings[waitCondition.condition.second_signal.name].type
-                waitCondition.condition.second_signal.name = settings[waitCondition.condition.second_signal.name].name
+              if waitCondition.condition.second_signal then
+                if settings[waitCondition.condition.second_signal.name] then
+                  waitCondition.condition.second_signal.type = settings[waitCondition.condition.second_signal.name].type
+                  waitCondition.condition.second_signal.name = settings[waitCondition.condition.second_signal.name].name
+                end
               end
             end
           end
