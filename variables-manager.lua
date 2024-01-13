@@ -37,7 +37,9 @@ end
 function mgr.getTrainVariables(eArr)
   local results = {}
   for eKey, e in pairs(eArr) do
-    if e.name == 'locomotive' then
+    local eName = e.name 
+    local entity = game.entity_prototypes[eName]
+    if entity.type == 'locomotive' then
       if e.schedule then
         for scheduleKey, schedule in pairs(e.schedule) do
           for w in schedule.station:gmatch("%[.-%]") do
