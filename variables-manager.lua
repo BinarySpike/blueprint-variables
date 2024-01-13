@@ -515,7 +515,7 @@ function mgr.applyTrainVariables(settings, entities)
 
 
         -- schedule wait conditions
-        if (record.wait_condition) then
+        if (record.wait_conditions) then
           for waitConditionKey, waitCondition in pairs(record.wait_conditions) do
             if waitCondition.type == 'item_count' or waitCondition.type == 'fluid_count' or waitCondition.type == 'circuit' then
               if waitCondition.condition.first_signal then
