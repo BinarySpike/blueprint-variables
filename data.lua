@@ -1,184 +1,217 @@
-data:extend({
+data:extend(
+  {
     {
-        type = "item-group",
-        icons = {
-            {
-                icon = "__base__/graphics/icons/signal/signal_yellow.png",
-                icon_size = 64, icon_mipmaps = 4,
-            },
-            {
-                icon = "__base__/graphics/icons/blueprint-book.png",
-                icon_size = 64, icon_mipmaps = 4,
-                scale = 0.625,
-            }
-        },
-        icon_size = 64, icon_mipmaps = 4,
-        name = "blueprint-variables",
-        order = "fa", -- directly after signals
-    }
+      type = "custom-input",
+      name = "bv-confirm",
+      key_sequence = "E",
+      alternative_key_sequence = "ENTER"
+    },
+  })
+
+data:extend({
+  {
+    type = "item-group",
+    icons = {
+      {
+        icon = "__base__/graphics/icons/signal/signal_yellow.png",
+        icon_size = 64,
+        icon_mipmaps = 4,
+      },
+      {
+        icon = "__base__/graphics/icons/blueprint-book.png",
+        icon_size = 64,
+        icon_mipmaps = 4,
+        scale = 0.625,
+      }
+    },
+    icon_size = 64,
+    icon_mipmaps = 4,
+    name = "blueprint-variables",
+    order = "fa", -- directly after signals
+  }
 })
 
 
 local function createBlueprintVariable(name)
-    data:extend({
+  data:extend({
+    {
+      type = "item-subgroup",
+      group = "blueprint-variables",
+      name = string.format("blueprint-variable-%s", name),
+    },
+    { -- entity
+      type = "item",
+      subgroup = string.format("blueprint-variable-%s", name),
+      name = string.format("blueprint-variable-%s-entity", name),
+      stack_size = 50,
+      icons = {
         {
-            type = "item-subgroup",
-            group = "blueprint-variables",
-            name = string.format("blueprint-variable-%s", name);
+          icon = "__base__/graphics/icons/signal/signal_yellow.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
         },
-        { -- entity
-            type = "item",
-            subgroup = string.format("blueprint-variable-%s", name),
-            name = string.format("blueprint-variable-%s-entity", name),
-            stack_size = 50,
-            icons = {
-                {
-                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
-                    icon_size = 64, icon_mipmaps = 4,
-                },
-                {
-                    icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-                    scale = 0.25,
-                    shift = { -9, -9 }
-                },
-                {
-                    icon = "__blueprint-variables__/graphics/entity.png",
-                    icon_size = 32,
-                    icon_mipmaps = 3,
-                    scale = 0.625
-                }
-            },
-            icon_size = 64, icon_mipmaps = 4,
-            order = "a",
+        {
+          icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+          scale = 0.25,
+          shift = { -9, -9 }
         },
-        { -- furnace result
-            type = "item",
-            subgroup = string.format("blueprint-variable-%s", name),
-            name = string.format("blueprint-variable-%s-furnace-result", name),
-            stack_size = 1,
-            icons = {
-                {
-                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
-                    icon_size = 64, icon_mipmaps = 4,
-                },
-                {
-                  icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-                  scale = 0.25,
-                  shift = { -9, -9 }
-                },
-                {
-                  icon = "__base__/graphics/icons/steel-furnace.png",
-                  icon_size = 64, icon_mipmaps = 4,
-                  scale = 0.3125
-                },
-            },
-            icon_size = 64, icon_mipmaps = 4,
-            order = 'b',
+        {
+          icon = "__blueprint-variables__/graphics/entity.png",
+          icon_size = 32,
+          icon_mipmaps = 3,
+          scale = 0.625
+        }
+      },
+      icon_size = 64,
+      icon_mipmaps = 4,
+      order = "a",
+    },
+    { -- furnace result
+      type = "item",
+      subgroup = string.format("blueprint-variable-%s", name),
+      name = string.format("blueprint-variable-%s-furnace-result", name),
+      stack_size = 1,
+      icons = {
+        {
+          icon = "__base__/graphics/icons/signal/signal_yellow.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
         },
-        { -- stack size
-            type = "item",
-            subgroup = string.format("blueprint-variable-%s", name),
-            name = string.format("blueprint-variable-%s-stack-size", name),
-            stack_size = 1,
-            icons = {
-                {
-                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
-                    icon_size = 64, icon_mipmaps = 4,
-                },
-                {
-                    icon = "__blueprint-variables__/graphics/stack.png",
-                    scale = 0.375,
-                    icon_size = 64,
-                    icon_mipmaps = 4,
-                },
-                {
-                    icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-          icon_size = 64, icon_mipmaps = 4,
-                    scale = 0.25,
-                    shift = { -9, -9 }
-                },
-            },
-            icon_size = 64, icon_mipmaps = 4,
-            order = "c",
+        {
+          icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+          scale = 0.25,
+          shift = { -9, -9 }
         },
-        { -- fluid
-            type = "fluid",
-            subgroup = string.format("blueprint-variable-%s", name),
-            name = string.format("blueprint-variable-%s-fluid", name),
-            default_temperature = 25,
-            heat_capacity = "1KJ",
-            base_color = {r=0.4, g=0.6, b=0.1},
-            flow_color = { r=0.6, g=0.8, b=0.2},
-            max_temperature = 100,
-            icons = {
-                {
-                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
-          icon_size = 64, icon_mipmaps = 4,
-                },
-                {
-                    icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-          icon_size = 64, icon_mipmaps = 4,
-                    scale = 0.25,
-                    shift = { -9, -9 }
-                },
-                {
-                    icon = "__base__/graphics/icons/fluid/crude-oil.png",
-                    icon_size = 64, icon_mipmaps = 4,
-                    scale = 0.3125
-                }
-            },
-            icon_size = 64, icon_mipmaps = 4,
-            order = "d",
+        {
+          icon = "__base__/graphics/icons/steel-furnace.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.3125
         },
-        { -- Circuit 1
-            type = "virtual-signal",
-            subgroup = string.format("blueprint-variable-%s", name),
-            name = string.format("blueprint-variable-%s-circuit-1", name),
-            icons = {
-                {
-                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
-                    icon_size = 64, icon_mipmaps = 4,
-                },
-                {
-                  icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-                  icon_size = 64, icon_mipmaps = 4,
-                  scale = 0.25,
-                  shift = { -9, -9 }
-                },
-                {
-                  icon = "__base__/graphics/icons/red-wire.png",
-                  icon_size = 64, icon_mipmaps = 4,
-                  scale = 0.3125
-                },
-            },
-            icon_size = 64, icon_mipmaps = 4,
-            order = "e",
+      },
+      icon_size = 64,
+      icon_mipmaps = 4,
+      order = 'b',
+    },
+    { -- stack size
+      type = "item",
+      subgroup = string.format("blueprint-variable-%s", name),
+      name = string.format("blueprint-variable-%s-stack-size", name),
+      stack_size = 1,
+      icons = {
+        {
+          icon = "__base__/graphics/icons/signal/signal_yellow.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
         },
-        { -- Circuit 2
-            type = "virtual-signal",
-            subgroup = string.format("blueprint-variable-%s", name),
-            name = string.format("blueprint-variable-%s-circuit-2", name),
-            icons = {
-                {
-                    icon = "__base__/graphics/icons/signal/signal_yellow.png",
-                    icon_size = 64, icon_mipmaps = 4,
-                },
-                {
-                  icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
-                  icon_size = 64, icon_mipmaps = 4,
-                  scale = 0.25,
-                  shift = { -9, -9 }
-                },
-                {
-                  icon = "__base__/graphics/icons/green-wire.png",
-                  icon_size = 64, icon_mipmaps = 4,
-                  scale = 0.3125
-                },
-            },
-            icon_size = 64, icon_mipmaps = 4,
-            order = "f",
+        {
+          icon = "__blueprint-variables__/graphics/stack.png",
+          scale = 0.375,
+          icon_size = 64,
+          icon_mipmaps = 4,
         },
-    })
+        {
+          icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.25,
+          shift = { -9, -9 }
+        },
+      },
+      icon_size = 64,
+      icon_mipmaps = 4,
+      order = "c",
+    },
+    { -- fluid
+      type = "fluid",
+      subgroup = string.format("blueprint-variable-%s", name),
+      name = string.format("blueprint-variable-%s-fluid", name),
+      default_temperature = 25,
+      heat_capacity = "1KJ",
+      base_color = { r = 0.4, g = 0.6, b = 0.1 },
+      flow_color = { r = 0.6, g = 0.8, b = 0.2 },
+      max_temperature = 100,
+      icons = {
+        {
+          icon = "__base__/graphics/icons/signal/signal_yellow.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+        },
+        {
+          icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.25,
+          shift = { -9, -9 }
+        },
+        {
+          icon = "__base__/graphics/icons/fluid/crude-oil.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.3125
+        }
+      },
+      icon_size = 64,
+      icon_mipmaps = 4,
+      order = "d",
+    },
+    { -- Circuit 1
+      type = "virtual-signal",
+      subgroup = string.format("blueprint-variable-%s", name),
+      name = string.format("blueprint-variable-%s-circuit-1", name),
+      icons = {
+        {
+          icon = "__base__/graphics/icons/signal/signal_yellow.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+        },
+        {
+          icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.25,
+          shift = { -9, -9 }
+        },
+        {
+          icon = "__base__/graphics/icons/red-wire.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.3125
+        },
+      },
+      icon_size = 64,
+      icon_mipmaps = 4,
+      order = "e",
+    },
+    { -- Circuit 2
+      type = "virtual-signal",
+      subgroup = string.format("blueprint-variable-%s", name),
+      name = string.format("blueprint-variable-%s-circuit-2", name),
+      icons = {
+        {
+          icon = "__base__/graphics/icons/signal/signal_yellow.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+        },
+        {
+          icon = string.format("__blueprint-variables__/graphics/icons/blueprint-variables/%s.png", name),
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.25,
+          shift = { -9, -9 }
+        },
+        {
+          icon = "__base__/graphics/icons/green-wire.png",
+          icon_size = 64,
+          icon_mipmaps = 4,
+          scale = 0.3125
+        },
+      },
+      icon_size = 64,
+      icon_mipmaps = 4,
+      order = "f",
+    },
+  })
 end
 
 createBlueprintVariable(1)
