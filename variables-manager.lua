@@ -100,14 +100,19 @@ function mgr.getFilterVariables(e)
   local results = {}
 
   local eType
+  local eName
 
   if e.type == 'entity-ghost' then
     eType = e.ghost_type
+    eName = e.ghost_name
   else
     eType = e.type
+    eName = e.name
   end
 
-  if e.filter_slot_count > 0 and eType ~= 'infinity-container' then
+  local logiMode = game.entity_prototypes[eName].logistic_mode
+
+  if e.filter_slot_count > 0 and eType ~= 'infinity-container' and (eType == 'logistic-container' and logiMode ~= "requester") then
     for i = 1, e.filter_slot_count do
       table.insert(results, getVariable(e.get_filter(i)));
     end
@@ -273,7 +278,9 @@ local function updateControlBehavior(cb, settings)
     cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
     ---
   elseif cb.type == defines.control_behavior.type.inserter then
-    cb.circuit_stack_control_signal = updateSignal(cb.circuit_stack_control_signal or {}, settings)
+    if (cb.circuit_stack_control_signal) then
+      cb.circuit_stack_control_signal = updateSignal(cb.circuit_stack_control_signal, settings)
+    end
     cb.circuit_condition = updateCircuitCondition(cb.circuit_condition, settings)
     cb.logistic_condition = updateCircuitCondition(cb.logistic_condition, settings)
     ---

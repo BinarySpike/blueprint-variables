@@ -85,3 +85,9 @@ Date: 2024-01-12
     - Fixed furnace result not working when there were multiple smelting outputs (Selects the first smelting result where the entity ingredient is the singular ingredient)
     - Hitting E now confirms the apply window instead of dismissing it.
     - Support for modded locomotives (Pull Request #7 from xbsd-nikolay).
+---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: 2024-03-22
+  Bugfixes:
+    - Fixed crash when deselecting item stack size on inserters
+    - Fixed crash when placing bob's logistic chests
