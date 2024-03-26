@@ -112,7 +112,7 @@ function mgr.getFilterVariables(e)
 
   local logiMode = game.entity_prototypes[eName].logistic_mode
 
-  if e.filter_slot_count > 0 and eType ~= 'infinity-container' and (eType == 'logistic-container' and logiMode ~= "requester") then
+  if e.filter_slot_count > 0 and eType ~= 'infinity-container' and (logiMode ~= "requester" and logiMode ~= "buffer") then
     for i = 1, e.filter_slot_count do
       table.insert(results, getVariable(e.get_filter(i)));
     end
