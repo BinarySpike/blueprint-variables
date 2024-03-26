@@ -91,3 +91,8 @@ Date: 2024-03-22
   Bugfixes:
     - Fixed crash when deselecting item stack size on inserters
     - Fixed crash when placing bob's logistic chests
+---------------------------------------------------------------------------------------------------
+Version: 0.1.5
+Date: 2024-03-25
+  Bugfixes:
+    - Fixed regression on filters due to previous logistic chests fix.
